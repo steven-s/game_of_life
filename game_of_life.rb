@@ -2,6 +2,10 @@ class World
   def initialize
     @cells = []
   end
+  
+  def population
+    @cells.uniq { |cell| cell.hash }.size
+  end
 
   def spawn_cell(x, y)
     @cells << Cell.new(x, y)
@@ -27,34 +31,34 @@ class World
       end
     end
     
-    @cells = new_world
+    @cells = new_world.uniq { |cell| cell.hash }
   end
   
   private
   
   def neighbor_count(cell)
     neighbor_count = 0
-    neighbor_count += 1 if cell_alive?(cell.x + 1, cell.y) # left
-    neighbor_count += 1 if cell_alive?(cell.x - 1, cell.y) # right
+    neighbor_count += 1 if cell_alive?(cell.x + 1, cell.y) # right
+    neighbor_count += 1 if cell_alive?(cell.x - 1, cell.y) # left
     neighbor_count += 1 if cell_alive?(cell.x, cell.y + 1) # top
     neighbor_count += 1 if cell_alive?(cell.x, cell.y - 1) # bottom
-    neighbor_count += 1 if cell_alive?(cell.x + 1, cell.y + 1) # top left
-    neighbor_count += 1 if cell_alive?(cell.x + 1, cell.y - 1) # bottom left
-    neighbor_count += 1 if cell_alive?(cell.x - 1, cell.y + 1) # top right
-    neighbor_count += 1 if cell_alive?(cell.x - 1, cell.y - 1) # bottom right
+    neighbor_count += 1 if cell_alive?(cell.x + 1, cell.y + 1) # top right
+    neighbor_count += 1 if cell_alive?(cell.x + 1, cell.y - 1) # bottom right
+    neighbor_count += 1 if cell_alive?(cell.x - 1, cell.y + 1) # top left
+    neighbor_count += 1 if cell_alive?(cell.x - 1, cell.y - 1) # bottom left
     neighbor_count
   end
   
   def find_dead_neighbors(cell)
     dead_neighbors = []
-    dead_neighbors << Cell.new(cell.x + 1, cell.y) unless cell_alive?(cell.x + 1, cell.y) # left
-    dead_neighbors << Cell.new(cell.x - 1, cell.y) unless cell_alive?(cell.x - 1, cell.y) # right
+    dead_neighbors << Cell.new(cell.x + 1, cell.y) unless cell_alive?(cell.x + 1, cell.y) # right
+    dead_neighbors << Cell.new(cell.x - 1, cell.y) unless cell_alive?(cell.x - 1, cell.y) # left
     dead_neighbors << Cell.new(cell.x, cell.y + 1) unless cell_alive?(cell.x, cell.y + 1) # top
     dead_neighbors << Cell.new(cell.x, cell.y - 1) unless cell_alive?(cell.x, cell.y - 1) # bottom
-    dead_neighbors << Cell.new(cell.x + 1, cell.y + 1) unless cell_alive?(cell.x + 1, cell.y + 1) # top left
-    dead_neighbors << Cell.new(cell.x + 1, cell.y - 1) unless cell_alive?(cell.x + 1, cell.y - 1) # bottom left
-    dead_neighbors << Cell.new(cell.x - 1, cell.y + 1) unless cell_alive?(cell.x - 1, cell.y + 1) # top right
-    dead_neighbors << Cell.new(cell.x - 1, cell.y - 1) unless cell_alive?(cell.x - 1, cell.y - 1) # bottom right
+    dead_neighbors << Cell.new(cell.x + 1, cell.y + 1) unless cell_alive?(cell.x + 1, cell.y + 1) # top right
+    dead_neighbors << Cell.new(cell.x + 1, cell.y - 1) unless cell_alive?(cell.x + 1, cell.y - 1) # bottom right
+    dead_neighbors << Cell.new(cell.x - 1, cell.y + 1) unless cell_alive?(cell.x - 1, cell.y + 1) # top left
+    dead_neighbors << Cell.new(cell.x - 1, cell.y - 1) unless cell_alive?(cell.x - 1, cell.y - 1) # bottom left
     dead_neighbors
   end
 end
@@ -64,5 +68,13 @@ class Cell
   
   def initialize(x, y)
     @x, @y = x, y
+  end
+  
+  def equal?(other)
+    @x == other.x and @y == other.y
+  end
+  
+  def hash
+    (@x.hash + 1) * (@y.hash + 2)
   end
 end
