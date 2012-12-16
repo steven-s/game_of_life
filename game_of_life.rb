@@ -70,10 +70,6 @@ class Cell
     @x, @y = x, y
   end
   
-  def equal?(other)
-    @x == other.x and @y == other.y
-  end
-  
   def hash
     (@x.hash + 1) * (@y.hash + 2)
   end

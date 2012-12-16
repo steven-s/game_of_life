@@ -50,19 +50,6 @@ describe 'game of life' do
       fourth_quadrant.y.should eq(-5)
     end
     
-    it 'should define equality' do
-      cell = Cell.new(2, 3)
-      equal_cell = Cell.new(2, 3)
-      different_cell_one = Cell.new(6, 3)
-      different_cell_two = Cell.new(2, 5)
-      different_cell_three = Cell.new(3, 2)
-      
-      cell.should equal(equal_cell)
-      cell.should_not equal(different_cell_one)
-      cell.should_not equal(different_cell_two)
-      cell.should_not equal(different_cell_three)
-    end
-    
     it 'should define hash' do
       cell = Cell.new(2, 3)
       equal_cell = Cell.new(2, 3)
