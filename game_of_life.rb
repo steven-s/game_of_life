@@ -71,6 +71,6 @@ class Cell
   end
   
   def hash
-    (@x.hash + 1) * (@y.hash + 2)
+    (17 + @x.hash) * 31 + @y.hash 
   end
 end
